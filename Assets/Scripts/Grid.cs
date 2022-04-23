@@ -9,18 +9,20 @@ public class Grid : ScriptableObject
 {
     private int width;
     private int height;
+    private int m;
     private int cellSize;
     private Cell cellPrefab;
     private Cell[,] gridArray;
 
 
-    public Grid(int width, int height, int cellSize, Cell cellPrefab)
+    public Grid(int width, int height, int cellSize, Cell cellPrefab,int m)
     {
         
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
         this.cellPrefab = cellPrefab;
+        this.m = m;
 
         generateBoard();
     }
@@ -29,20 +31,26 @@ public class Grid : ScriptableObject
     {
         Cell cell;
         gridArray = new Cell[width, height];
-
+        int nw = 1 ;
+        Debug.Log("eme: "+m);
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++)
             {
                 var p = new Vector2(i, j) * cellSize;
                 cell = Instantiate(cellPrefab, p, Quaternion.identity);
-                cell.Init(this, (int)p.x, (int)p.y, true);
+                cell.Init(this, (int)p.x, (int)p.y, true,false,false);
 
-                if (Random.Range(0, 10) <= 2)
+                if ((Random.Range(0, 9) ==6 ||Random.Range(0, 9) <2)  && nw<m){
+                    nw++;  
                     cell.SetWalkable(false);
-                else
+                    
+
+                }else{
                     cell.SetColor(Color.blue);
 
+                }
+                Debug.Log("Celdas obstáculo: "+nw);
                 gridArray[i, j] = cell;
             }
         }

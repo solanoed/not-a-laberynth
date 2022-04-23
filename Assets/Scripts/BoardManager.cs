@@ -12,6 +12,8 @@ public class BoardManager : MonoBehaviour
     private Player player;
     [SerializeField]
     private float moveSpeed = 2f;
+    public int n = 10;
+    public int m = 10;
 
     private void Awake()
     {
@@ -20,7 +22,7 @@ public class BoardManager : MonoBehaviour
 
     private void Start()
     {
-        grid = new Grid(10, 10, 1, CellPrefab);
+        grid = new Grid(n, n, 1, CellPrefab,m);
 
         player = Instantiate(PlayerPrefab, new Vector2(0, 0), Quaternion.identity);  
     }
