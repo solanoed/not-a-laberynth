@@ -9,7 +9,7 @@ public class PathManager : MonoBehaviour
 {
     private const int MOVE_STRAIGHT_COST = 10;
     private const int MOVE_DIAGONAL_COST = 14;
-    public static PathManager Instance; 
+    public static PathManager Instance;
     private List<Cell> openList;
     private List<Cell> closedList;
     private Grid grid;
@@ -33,10 +33,20 @@ public class PathManager : MonoBehaviour
         {
             for (int y = 0; y < grid.GetHeight(); y++)
             {
-               
                 Cell pathNode = grid.GetGridObject(x, y);
-                if (pathNode.isWalkable)
+                if (x == pathNode.x -1 && y == pathNode.y -1)
+                {
+                    pathNode.SetStart(true);
+                }
+                if (x == 0 && y == 0)
+                {
+                    pathNode.SetEnd(true);
+                }
+                if (pathNode.isWalkable && !pathNode.isStart && !pathNode.isEnd)
                     pathNode.SetColor(Color.blue);
+                // if (pathNode.isStart || pathNode.isEnd)
+                //     pathNode.SetColor(Color.red);
+
                 pathNode.gCost = int.MaxValue;
                 pathNode.CalculateFCost();
                 pathNode.pastCell = null;
@@ -101,8 +111,11 @@ public class PathManager : MonoBehaviour
         }
         path.Reverse();
 
-        foreach(Cell c in path)
+        foreach (Cell c in path)
         {
+            if (c.isStart || c.isEnd)
+                c.SetColor(Color.red);
+
             c.SetColor(Color.green);
             Debug.Log(c.ToString());
         }

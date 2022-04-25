@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     private float moveSpeed = 2f;
 
     public Vector2 GetPosition => transform.position;
+    private Grid grid;
 
     // Index of current waypoint from which Enemy walks
     // to the next one
