@@ -8,7 +8,6 @@ public class Scene_Controller : MonoBehaviour
     // Start is called before the first frame update
     public int iLevelToLoad;
     public string sLevelToLoad;
-    public BoxCollider2D colliderCell;
 
     public bool useIntegerToLoadLevel = false;
     void Start()
@@ -21,7 +20,7 @@ public class Scene_Controller : MonoBehaviour
     {
         
     }
-    private void OnTriggerEnter2D(BoxCollider2D colliderCell) {
+    private void OnTriggerEnter2D(Collider2D colliderCell) {
         GameObject collisionGameObject = colliderCell.gameObject;
         if(colliderCell.gameObject.tag=="Player"){
             LoadScene();
