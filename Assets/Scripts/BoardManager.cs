@@ -19,48 +19,66 @@ public class BoardManager : MonoBehaviour
     //Level collider
     public int iLevelToLoad;
     public string sLevelToLoad;
-    int currentLevel;
+    public SceneInfo sceneInfo;
+    int currentLevel = 1;
 
     public bool useIntegerToLoadLevel = false;
 
     private void Awake()
     {
         Instance = this;
-        currentLevel = PlayerPrefs.GetInt("Level");
 
     }
 
     private void Start()
     {
-        Debug.Log("Nivel: " + currentLevel);
-        switch (currentLevel)
-        {
-            case 0:
-                grid = new Grid(n, n, 1, CellPrefab, endPrefab, m);
-                player = Instantiate(PlayerPrefab, new Vector2(0, 0), Quaternion.identity);
-                break;
-            case 1:
-                grid = new Grid(n, n, 1, CellPrefab, endPrefab, m);
-                player = Instantiate(PlayerPrefab, new Vector2(0, 0), Quaternion.identity);
-
-                break;
-            default:
-                break;
-        }
-
-        
+        grid = new Grid(n, n, 1, CellPrefab, endPrefab, m);
+        player = Instantiate(PlayerPrefab, new Vector2(0, 0), Quaternion.identity);
+                
     }
     void Update()
     {
         if (player.GetPosition.x == n - 1 && player.GetPosition.y == n - 1)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            PlayerPrefs.SetInt("Level", currentLevel++);
-            Debug.Log("LLegó al final");
+            // sceneInfo.Level = currentLevel ++;
+            // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            chooseLevel(currentLevel);
+            currentLevel++;
+            Debug.Log("Current Level: "+currentLevel);
         }
         // if(player.GetPosition.x==0 && player.GetPosition.y==0){
         //     Debug.Log("Inicio");
         // }
+    }
+    public void chooseLevel(int currentLevel){
+        switch (currentLevel)
+        {
+            case 1:
+                Destroy(this.grid);
+                Destroy(this.player);
+            //     grid = new Grid(n, n, 1, CellPrefab, endPrefab, m);
+            //     player = Instantiate(PlayerPrefab, new Vector2(0, 0), Quaternion.identity);
+            //     break;
+            // case 2:
+            //     Destroy(this.grid);
+            //     Destroy(this.player);
+            //     grid = new Grid(n, n, 1, CellPrefab, endPrefab, m);
+            //     player = Instantiate(PlayerPrefab, new Vector2(0, 0), Quaternion.identity);
+            //     break;
+            // case 3:
+            //     Destroy(this.grid);
+            //     Destroy(this.player);
+            //     grid = new Grid(n, n, 1, CellPrefab, endPrefab, m);
+            //     player = Instantiate(PlayerPrefab, new Vector2(0, 0), Quaternion.identity);
+            //     break;
+            // case 4:
+            //     Destroy(this.grid);
+            //     Destroy(this.player);
+            //     grid = new Grid(n, n, 1, CellPrefab, endPrefab, m);
+            //     player = Instantiate(PlayerPrefab, new Vector2(0, 0), Quaternion.identity);
+                break;
+
+        }
     }
     public void CellMouseClick(int x, int y)
     {
