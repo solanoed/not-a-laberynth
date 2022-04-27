@@ -7,13 +7,13 @@ using Random = UnityEngine.Random;
 
 public class Grid : ScriptableObject
 {
-    private int width;
-    private int height;
-    private int m;
-    private int cellSize;
-    private Cell cellPrefab;
-    private Cell endPrefab;
-    private Cell[,] gridArray;
+    public int width;
+    public int height;
+    public int m;
+    public int cellSize;
+    public Cell cellPrefab;
+    public Cell endPrefab;
+    public Cell[,] gridArray;
 
 
     public Grid(int width, int height, int cellSize, Cell cellPrefab,Cell endPrefab, int m)
@@ -60,7 +60,6 @@ public class Grid : ScriptableObject
                 }
             }
         }
-        // print(nums);
 
 
         return nums;
@@ -79,29 +78,39 @@ public class Grid : ScriptableObject
     {
         Cell cell;
         gridArray = new Cell[width, height];
-        // int [] number = randomCells();
 
 
         for (var i = 0; i < width; i++)
         {
             for (var j = 0; j < height; j++)
             {
+
                 var p = new Vector2(i, j) * cellSize;
+                //Final
                 if(i == width-1 && j == width-1){
 
                 cell = Instantiate(endPrefab, p, Quaternion.identity);
                 cell.SetEnd(true);
 
                 }else{
+                //Cell normal 
                 cell = Instantiate(cellPrefab, p, Quaternion.identity);
 
                 }
-                
+                //Si es inicio
                 if (i == 0 && j == 0)
                 {
-                    // cell.Init(this, (int)p.x, (int)p.y, true, false, true);
                     cell.SetStart(true);
                 }
+                //Segundo Spawner
+                if(i == height-1 && j == 0){
+                    Debug.Log("Spawner Abajo "+i+" "+j);
+                }
+                if(i == 0 && j == height-1){
+                    Debug.Log("Spawner Arriba "+i+" "+j);
+
+                }
+                
                 cell.Init(this, (int)p.x, (int)p.y, true, false, false);
                 int num = i * 10 + j;
                 foreach (var item in numbers)
@@ -118,26 +127,6 @@ public class Grid : ScriptableObject
         }
 
 
-        // for (var i = 0; i < width; i++)
-        // {
-        //     for (var j = 0; j < height; j++)
-        //     {
-        //         var p = new Vector2(i, j) * cellSize;
-        //         cell = Instantiate(cellPrefab, p, Quaternion.identity);
-        //         cell.Init(this, (int)p.x, (int)p.y, true, false, false);
-        //         int num = j + i*10;
-        //         Debug.Log("num: "+num+" numbers: "+numbers[j]);
-        //         if(num==numbers[cont]){
-        //                 cell.SetWalkable(false);
-        //         }else{
-        //                 cell.SetColor(Color.blue);
-        //         }
-        //         cell.SetColor(Color.blue);
-        //         gridArray[i, j] = cell;
-
-        //     }
-        //     cont++;
-        // }
         var center = new Vector2((float)height / 2 - 0.5f, (float)width / 2 - 0.5f);
         Camera.main.transform.position = new Vector3(center.x, center.y, -5);
     }
@@ -148,57 +137,7 @@ public class Grid : ScriptableObject
     {
         int[] number = randomCells();
         fillBoard(number);
-        // Cell cell;
-        // gridArray = new Cell[width, height];
-        // // int nw = 1;
-        // // print(number);
 
-        // for (int i = 0; i < width; i++)
-        // {
-        //     for (int j = 0; j < height; j++)
-        //     {
-        //         var p = new Vector2(i, j) * cellSize;
-        //         cell = Instantiate(cellPrefab, p, Quaternion.identity);
-        //         cell.Init(this, (int)p.x, (int)p.y, true, false, false);
-        //         int num = j + i*10;
-
-
-        //             Debug.Log("numero: "+num);
-        //             Debug.Log("number: "+number[i]);
-        //             if (num==number[i])
-        //             {
-        //                 Debug.Log("Item: "+number[i]+"Matrix: "+num);
-        //                 cell.SetWalkable(false);
-
-        //             }else{
-        //                 // Debug.Log(num+" walkable");
-        //                 cell.SetColor(Color.blue);
-        //             }
-
-
-        //         // double rndm = Random.Range(1, 7);
-
-        //         // if ((rndm == 3) && nw < m)
-        //         // {
-        //         //     nw++;
-        //         //     cell.SetWalkable(false);
-
-
-        //         // }
-        //         // else
-        //         // {
-        //         //     cell.SetColor(Color.blue);
-
-        //         // }
-        //         // // Debug.Log("x: "+width + ", y: "+height);
-        //         gridArray[i, j] = cell;
-        //     }
-        // }
-        // // Debug.Log("Celdas obstáculo: " + nw);
-
-        // var center = new Vector2((float)height / 2 - 0.5f, (float)width / 2 - 0.5f);
-
-        // Camera.main.transform.position = new Vector3(center.x, center.y, -5);
     }
 
     internal int GetHeight()
@@ -214,7 +153,6 @@ public class Grid : ScriptableObject
 
     public void CellMouseClick(Cell cell)
     {
-        //cell.SetText("Click on cell "+cell.x+ " "+ cell.y);
         BoardManager.Instance.CellMouseClick(cell.x, cell.y);
     }
 
