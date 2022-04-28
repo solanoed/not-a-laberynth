@@ -23,6 +23,9 @@ public class BoardManager : MonoBehaviour
     public Text LevelName;
     public Text Time;
 
+    public float horizontalMove = 0f;
+    public float verticalMove = 0f;
+
 
     private void Awake()
     {
@@ -38,8 +41,27 @@ public class BoardManager : MonoBehaviour
         player = Instantiate(PlayerPrefab, new Vector2(0, 0), Quaternion.identity);
                 
     }
+    void FixedUpdate(){
+        if(horizontalMove==1){
+            player.transform.position = Vector2.MoveTowards(player.transform.position,path[waypointIndex].transform.position.x,moveSpeed * Time.deltaTime);
+        }
+        if(horizontalMove==-1){
+            
+        }
+        if(verticalMove==1){
+            
+        }
+        if(verticalMove==-1){
+            
+        }
+    }
     void Update()
-    {   PlayerPrefs.SetString("Time",Time.text);
+
+    {
+        horizontalMove = Input.GetAxisRaw("Horizontal");
+        verticalMove = Input.GetAxisRaw("Vertical");
+        Debug.Log(horizontalMove+" "+verticalMove);
+        PlayerPrefs.SetString("Time",Time.text);
         PlayerPrefs.SetString("Level",LevelName.text);
         
         if (player.GetPosition.x == n - 1 && player.GetPosition.y == n - 1)
@@ -69,6 +91,11 @@ public class BoardManager : MonoBehaviour
             
             Debug.Log(manager.Level);
         }
+    }
+
+    public void playerInput (){
+        horizontalMove = Input.GetAxisRaw("Horizontal");
+        verticalMove = Input.GetAxisRaw("Vertical");
     }
     
     public void CellMouseClick(int x, int y)
