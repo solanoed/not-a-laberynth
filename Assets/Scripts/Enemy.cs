@@ -4,25 +4,33 @@ using UnityEngine;
 
 // ref: https://drive.google.com/file/d/1WiF2LwM-6WvEnas9vw32YrYPly9K0Qrv/view
 
-public class Player : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
     List<Cell> path;
     [SerializeField]
+    public Player p;
     private float moveSpeed = 2f;
-    public Grid grid;
 
     public Vector2 GetPosition => transform.position;
+    private Grid grid;
 
     // Index of current waypoint from which Enemy walks
     // to the next one
     private int waypointIndex = 0;
-    public delegate void MovePlayer();
-    public static event MovePlayer onMoved;
 
     // Update is called once per frame
     void Update()
     {
         Move();
+    }
+    
+    private void OnDisable() {
+        // Player.onMoved -= follow();
+        
+    }
+
+    void follow(){
+        // SetPath(Player.grid);
     }
 
     public void SetPath(List<Cell> path)
@@ -30,12 +38,9 @@ public class Player : MonoBehaviour
         //ResetPosition();
         waypointIndex = 0;
         this.path = path;
-        if(onMoved!=null){
-            onMoved();
-        }
     }
 
-    public void ResetPosition()
+    public void ResetPosition(int x, int y)
     {
         transform.position = new Vector2(0, 0);
     }
