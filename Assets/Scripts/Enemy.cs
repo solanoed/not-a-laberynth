@@ -45,7 +45,7 @@ public class Enemy : MonoBehaviour
         transform.position = new Vector2(0, 0);
     }
 
-    private void Move()
+    public void Move()
     {
         // If player didn't reach last waypoint it can move
         // If player reached last waypoint then it stops

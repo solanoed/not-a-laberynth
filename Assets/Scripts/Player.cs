@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     private int waypointIndex = 0;
     public delegate void MovePlayer();
     public static event MovePlayer onMoved;
+   
 
     // Update is called once per frame
     void Update()
@@ -52,9 +53,10 @@ public class Player : MonoBehaviour
 
             // Move player from current waypoint to the next one
             // using MoveTowards method
-            transform.position = Vector2.MoveTowards(transform.position,
-               path[waypointIndex].transform.position,
-               moveSpeed * Time.deltaTime);
+            // transform.position = Vector2.MoveTowards(transform.position,
+            //    path[waypointIndex].transform.position,
+            //    moveSpeed * Time.deltaTime);
+               transform.position =  path[waypointIndex].transform.position;
 
             // If player reaches position of waypoint he walked towards
             // then waypointIndex is increased by 1

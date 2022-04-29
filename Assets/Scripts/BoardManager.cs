@@ -14,6 +14,10 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private Cell endPrefab;
     [SerializeField] private Player PlayerPrefab;
     [SerializeField] private Enemy EnemyPrefab;
+     public KeyCode up;
+    public KeyCode down;
+    public KeyCode left;
+    public KeyCode right;
     private Grid grid;
     private Player player;
     private Enemy e1, e2, e3, e4;
@@ -43,6 +47,7 @@ public class BoardManager : MonoBehaviour
         grid = new Grid(n, n, 1, CellPrefab, endPrefab, m);
         player = Instantiate(PlayerPrefab, new Vector2(0, 0), Quaternion.identity);
         e1 = Instantiate(EnemyPrefab, new Vector2(0, n - 1), Quaternion.identity);
+
         
 
         // e2 = Instantiate(EnemyPrefab, new Vector2(n - 1,0), Quaternion.identity);
@@ -53,40 +58,59 @@ public class BoardManager : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (player.GetPosition.x + (int)horizontalMove >= 0 && player.GetPosition.x + (int)horizontalMove < n && (int)player.GetPosition.y + (int)verticalMove >= 0 && (int)player.GetPosition.y + (int)verticalMove < n)
-        {
-            if (grid.gridArray[(int)player.GetPosition.x + (int)horizontalMove, (int)player.GetPosition.y + (int)verticalMove].isWalkable)
-            {
-                player.transform.position = Vector2.MoveTowards(player.transform.position, grid.gridArray[(int)player.GetPosition.x + (int)horizontalMove, (int)player.GetPosition.y + (int)verticalMove].Position, moveSpeed * Time.deltaTime);
-            }
-        }
+        
 
+    }
+
+    void move(int x, int y){
+        List<Cell> path = PathManager.Instance.FindPath(grid, (int)player.GetPosition.x, (int)player.GetPosition.y, x, y);
+        player.SetPath(path);
+    }
+    void enemyMove(){
+        List<Cell> path = PathManager.Instance.FindPath(grid, (int)e1.GetPosition.x, (int)e1.GetPosition.y, (int)player.GetPosition.x, (int)player.GetPosition.y);
+        e1.SetPath(path);
+        e1.Move();
     }
     void Update()
 
     {
-        
+
+        if (Input.GetKeyDown(up))
+        {
+            move((int)player.GetPosition.x,(int)player.GetPosition.y+1);
+        }else
+        if (Input.GetKeyDown(down))
+        {
+            move((int)player.GetPosition.x,(int)player.GetPosition.y-1);
+
+        }
+        if (Input.GetKeyDown(left)==true)
+        {
+            move((int)player.GetPosition.x-1,(int)player.GetPosition.y);
+        }
+        if (Input.GetKeyDown(right))
+        {
+            move((int)player.GetPosition.x+1,(int)player.GetPosition.y);
+
+        }
+        // horizontalMove = Input.GetKeyDown(up);
+        // verticalMove = Input.GetAxisRaw("Vertical");
+        // Debug.Log(horizontalMove+" "+verticalMove);
+        PlayerPrefs.SetString("Time", time.text);
+        PlayerPrefs.SetString("Level", LevelName.text);
         switch (manager.Level)
         {
             case 1:
-                List<Cell> path = PathManager.Instance.FindPath(grid, (int)e1.GetPosition.x, (int)e1.GetPosition.y, (int)player.GetPosition.x, (int)player.GetPosition.y);
-                e1.SetPath(path);
+                InvokeRepeating("enemyMove", 0f, 2f);
                 break;
             case 2:
+                
                 break;
             case 3:
                 break;
             case 4:
                 break;
-            default:
-                break;
         }
-        horizontalMove = Input.GetAxisRaw("Horizontal");
-        verticalMove = Input.GetAxisRaw("Vertical");
-        // Debug.Log(horizontalMove+" "+verticalMove);
-        PlayerPrefs.SetString("Time", time.text);
-        PlayerPrefs.SetString("Level", LevelName.text);
-        
         if (player.GetPosition.x == n - 1 && player.GetPosition.y == n - 1)
         {
             switch (manager.Level)
@@ -95,18 +119,17 @@ public class BoardManager : MonoBehaviour
                     Debug.Log("Level 1 To Level 2");
                     LevelName.text = "Level 2";
                     player.ResetPosition();
-                    Destroy(e1);
-                    e1 = Instantiate(EnemyPrefab, new Vector2(0, n - 1), Quaternion.identity);
-                    e2 = Instantiate(EnemyPrefab, new Vector2(0, n - 1), Quaternion.identity);
-
-                    // e1 = Instantiate(EnemyPrefab, new Vector2(n - 1, 0), Quaternion.identity);
+                    // e1.ResetPosition(0, n - 1);
+                    e2 = Instantiate(EnemyPrefab, new Vector2(n-1, 0), Quaternion.identity);
                     
-
                     manager.nextLevel();
                     break;
                 case 2:
                     LevelName.text = "Level 3";
                     player.ResetPosition();
+                    e1 = Instantiate(EnemyPrefab, new Vector2(0, n - 1), Quaternion.identity);
+                    e2 = Instantiate(EnemyPrefab, new Vector2(n-1, 0), Quaternion.identity);
+                    e3 = Instantiate(EnemyPrefab, new Vector2(0, n - 3), Quaternion.identity);
                     
                     manager.nextLevel();
                     SceneManager.LoadScene(2);
@@ -115,7 +138,15 @@ public class BoardManager : MonoBehaviour
                 case 3:
                     LevelName.text = "Level 4";
                     player.ResetPosition();
+                    Destroy(e1);
+                    Destroy(e2);
+                    Destroy(e3);
+                    e1 = Instantiate(EnemyPrefab, new Vector2(0, n - 1), Quaternion.identity);
+                    e2 = Instantiate(EnemyPrefab, new Vector2(n-1, 0), Quaternion.identity);
+                    e3 = Instantiate(EnemyPrefab, new Vector2(0, n - 3), Quaternion.identity);
+                    e4 = Instantiate(EnemyPrefab, new Vector2(n - 3,0), Quaternion.identity);
                     manager.nextLevel();
+                    SceneManager.LoadScene(2);
                     break;
                 case 4:
                     break;
