@@ -47,6 +47,20 @@ public class BoardManager : MonoBehaviour
         grid = new Grid(n, n, 1, CellPrefab, endPrefab, m);
         player = Instantiate(PlayerPrefab, new Vector2(0, 0), Quaternion.identity);
         e1 = Instantiate(EnemyPrefab, new Vector2(0, n - 1), Quaternion.identity);
+        
+        switch (manager.Level)
+        {
+            case 1:
+                InvokeRepeating("enemyMove", 0f, 2f);
+                break;
+            case 2:
+                
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
 
         
 
@@ -54,11 +68,6 @@ public class BoardManager : MonoBehaviour
         // e3 = Instantiate(EnemyPrefab, new Vector2(0, n - 3), Quaternion.identity);
         // e4 = Instantiate(EnemyPrefab, new Vector2(n - 3,0), Quaternion.identity);
 
-
-    }
-    void FixedUpdate()
-    {
-        
 
     }
 
@@ -98,19 +107,7 @@ public class BoardManager : MonoBehaviour
         // Debug.Log(horizontalMove+" "+verticalMove);
         PlayerPrefs.SetString("Time", time.text);
         PlayerPrefs.SetString("Level", LevelName.text);
-        switch (manager.Level)
-        {
-            case 1:
-                InvokeRepeating("enemyMove", 0f, 2f);
-                break;
-            case 2:
-                
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
+        
         if (player.GetPosition.x == n - 1 && player.GetPosition.y == n - 1)
         {
             switch (manager.Level)
@@ -119,7 +116,7 @@ public class BoardManager : MonoBehaviour
                     Debug.Log("Level 1 To Level 2");
                     LevelName.text = "Level 2";
                     player.ResetPosition();
-                    // e1.ResetPosition(0, n - 1);
+                    e1.ResetPosition(0, n - 1);
                     e2 = Instantiate(EnemyPrefab, new Vector2(n-1, 0), Quaternion.identity);
                     
                     manager.nextLevel();
