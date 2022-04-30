@@ -14,7 +14,7 @@ public class BoardManager : MonoBehaviour
     [SerializeField] private Cell endPrefab;
     [SerializeField] private Player PlayerPrefab;
     [SerializeField] private Enemy EnemyPrefab;
-     public KeyCode up;
+    public KeyCode up;
     public KeyCode down;
     public KeyCode left;
     public KeyCode right;
@@ -32,7 +32,7 @@ public class BoardManager : MonoBehaviour
 
     public float horizontalMove = 0f;
     public float verticalMove = 0f;
-    
+
 
 
     private void Awake()
@@ -47,22 +47,11 @@ public class BoardManager : MonoBehaviour
         grid = new Grid(n, n, 1, CellPrefab, endPrefab, m);
         player = Instantiate(PlayerPrefab, new Vector2(0, 0), Quaternion.identity);
         e1 = Instantiate(EnemyPrefab, new Vector2(0, n - 1), Quaternion.identity);
-        
-        switch (manager.Level)
-        {
-            case 1:
-                InvokeRepeating("enemyMove", 0f, 2f);
-                break;
-            case 2:
-                
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-        }
+        InvokeRepeating("enemyMove", 0f, 1f);
 
-        
+
+
+
 
         // e2 = Instantiate(EnemyPrefab, new Vector2(n - 1,0), Quaternion.identity);
         // e3 = Instantiate(EnemyPrefab, new Vector2(0, n - 3), Quaternion.identity);
@@ -71,43 +60,92 @@ public class BoardManager : MonoBehaviour
 
     }
 
-    void move(int x, int y){
+    void move(int x, int y)
+    {
         List<Cell> path = PathManager.Instance.FindPath(grid, (int)player.GetPosition.x, (int)player.GetPosition.y, x, y);
         player.SetPath(path);
     }
-    void enemyMove(){
+    void enemyMove()
+    {
+        switch (manager.Level)
+        {
+
+            case 1:
+                followE1();
+                break;
+            case 2:
+                followE1();
+                followE2();
+                break;
+            case 3:
+                followE1();
+                followE2();
+                followE3();
+                break;
+            case 4:
+                followE1();
+                followE2();
+                followE3();
+                followE4();
+                break;
+
+        }
+    }
+    void followE1()
+    {
         List<Cell> path = PathManager.Instance.FindPath(grid, (int)e1.GetPosition.x, (int)e1.GetPosition.y, (int)player.GetPosition.x, (int)player.GetPosition.y);
         e1.SetPath(path);
         e1.Move();
     }
-    void Update()
-
+    void followE2()
     {
-
+        List<Cell> path = PathManager.Instance.FindPath(grid, (int)e2.GetPosition.x, (int)e2.GetPosition.y, (int)player.GetPosition.x, (int)player.GetPosition.y);
+        e2.SetPath(path);
+        e2.Move();
+    }
+    void followE3()
+    {
+        List<Cell> path = PathManager.Instance.FindPath(grid, (int)e3.GetPosition.x, (int)e3.GetPosition.y, (int)player.GetPosition.x, (int)player.GetPosition.y);
+        e3.SetPath(path);
+        e3.Move();
+    }
+    void followE4()
+    {
+        List<Cell> path = PathManager.Instance.FindPath(grid, (int)e4.GetPosition.x, (int)e4.GetPosition.y, (int)player.GetPosition.x, (int)player.GetPosition.y);
+        e4.SetPath(path);
+        e4.Move();
+    }
+    void movementImput()
+    {
         if (Input.GetKeyDown(up))
         {
-            move((int)player.GetPosition.x,(int)player.GetPosition.y+1);
-        }else
+            move((int)player.GetPosition.x, (int)player.GetPosition.y + 1);
+        }
+
         if (Input.GetKeyDown(down))
         {
-            move((int)player.GetPosition.x,(int)player.GetPosition.y-1);
+            move((int)player.GetPosition.x, (int)player.GetPosition.y - 1);
 
         }
-        if (Input.GetKeyDown(left)==true)
+        if (Input.GetKeyDown(left) == true)
         {
-            move((int)player.GetPosition.x-1,(int)player.GetPosition.y);
+            move((int)player.GetPosition.x - 1, (int)player.GetPosition.y);
         }
         if (Input.GetKeyDown(right))
         {
-            move((int)player.GetPosition.x+1,(int)player.GetPosition.y);
+            move((int)player.GetPosition.x + 1, (int)player.GetPosition.y);
 
         }
-        // horizontalMove = Input.GetKeyDown(up);
-        // verticalMove = Input.GetAxisRaw("Vertical");
-        // Debug.Log(horizontalMove+" "+verticalMove);
+    }
+    void Update()
+
+    {
+        //Capta el Input de Movimiento
+        movementImput();
+        //Seteo de Prefs para Manager de Tiempo y Nivel Máximo alcanzado
         PlayerPrefs.SetString("Time", time.text);
         PlayerPrefs.SetString("Level", LevelName.text);
-        
+        // Si llega al final Pasa al siguiente nivel
         if (player.GetPosition.x == n - 1 && player.GetPosition.y == n - 1)
         {
             switch (manager.Level)
@@ -117,35 +155,29 @@ public class BoardManager : MonoBehaviour
                     LevelName.text = "Level 2";
                     player.ResetPosition();
                     e1.ResetPosition(0, n - 1);
-                    e2 = Instantiate(EnemyPrefab, new Vector2(n-1, 0), Quaternion.identity);
-                    
+                    e2 = Instantiate(EnemyPrefab, new Vector2(n - 1, 0), Quaternion.identity);
+
                     manager.nextLevel();
                     break;
                 case 2:
                     LevelName.text = "Level 3";
                     player.ResetPosition();
-                    e1 = Instantiate(EnemyPrefab, new Vector2(0, n - 1), Quaternion.identity);
-                    e2 = Instantiate(EnemyPrefab, new Vector2(n-1, 0), Quaternion.identity);
+                    e1.ResetPosition(0, n - 1);
+                    e2.ResetPosition(n - 1, 0);
                     e3 = Instantiate(EnemyPrefab, new Vector2(0, n - 3), Quaternion.identity);
-                    
+
                     manager.nextLevel();
-                    SceneManager.LoadScene(2);
 
                     break;
                 case 3:
                     LevelName.text = "Level 4";
                     player.ResetPosition();
-                    Destroy(e1);
-                    Destroy(e2);
-                    Destroy(e3);
-                    e1 = Instantiate(EnemyPrefab, new Vector2(0, n - 1), Quaternion.identity);
-                    e2 = Instantiate(EnemyPrefab, new Vector2(n-1, 0), Quaternion.identity);
-                    e3 = Instantiate(EnemyPrefab, new Vector2(0, n - 3), Quaternion.identity);
-                    e4 = Instantiate(EnemyPrefab, new Vector2(n - 3,0), Quaternion.identity);
+                    e1.ResetPosition(0, n - 1);
+                    e2.ResetPosition(n - 1, 0);
+                    e3.ResetPosition(0,n - 3);
+                    e4 = Instantiate(EnemyPrefab, new Vector2(n - 3, 0), Quaternion.identity);
                     manager.nextLevel();
                     SceneManager.LoadScene(2);
-                    break;
-                case 4:
                     break;
             }
 

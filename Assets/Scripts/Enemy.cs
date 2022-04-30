@@ -24,14 +24,6 @@ public class Enemy : MonoBehaviour
         Move();
     }
     
-    private void OnDisable() {
-        // Player.onMoved -= follow();
-        
-    }
-
-    void follow(){
-        // SetPath(Player.grid);
-    }
 
     public void SetPath(List<Cell> path)
     {
@@ -42,7 +34,10 @@ public class Enemy : MonoBehaviour
 
     public void ResetPosition(int x, int y)
     {
-        transform.position = new Vector2(0, 0);
+        transform.position = new Vector2(x, y);
+    }
+    public void setSpeed(float s){
+        moveSpeed = s;
     }
 
     public void Move()
