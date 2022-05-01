@@ -43,7 +43,7 @@ public class PathManager : MonoBehaviour
                     pathNode.SetEnd(true);
                 }
                 if (pathNode.isWalkable && !pathNode.isStart && !pathNode.isEnd)
-                    pathNode.SetColor(Color.blue);
+                    // pathNode.SetColor(Color.blue);
                 // if (pathNode.isStart || pathNode.isEnd)
                 //     pathNode.SetColor(Color.red);
 
@@ -114,9 +114,9 @@ public class PathManager : MonoBehaviour
         foreach (Cell c in path)
         {
             if (c.isStart || c.isEnd)
-                c.SetColor(Color.red);
+                // c.SetColor(Color.red);
 
-            c.SetColor(Color.green);
+            // c.SetColor(Color.green);
             Debug.Log(c.ToString());
         }
         return path;

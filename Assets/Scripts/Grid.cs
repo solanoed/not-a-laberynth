@@ -14,6 +14,7 @@ public class Grid : ScriptableObject
     public Cell cellPrefab;
     public Cell endPrefab;
     public Cell[,] gridArray;
+    public PathManager pm;
 
 
     public Grid(int width, int height, int cellSize, Cell cellPrefab,Cell endPrefab, int m)
@@ -25,8 +26,8 @@ public class Grid : ScriptableObject
         this.cellPrefab = cellPrefab;
         this.endPrefab = endPrefab;
         this.m = m;
-
-        generateBoard();
+        // Debug.Log(pm.FindPath(this,width,height,width-1,height-1));
+        generateBoard();    
     }
     public int[] randomCells()
     {
@@ -135,7 +136,7 @@ public class Grid : ScriptableObject
 
     private void generateBoard()
     {
-        int[] number = randomCells();
+        int[] number = randomCells();           
         fillBoard(number);
 
     }

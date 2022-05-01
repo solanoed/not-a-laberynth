@@ -44,18 +44,12 @@ public class BoardManager : MonoBehaviour
     private void Start()
     {
         LevelName.text = "Level 1";
+        PlayerPrefs.SetString("Status", "None");
+
         grid = new Grid(n, n, 1, CellPrefab, endPrefab, m);
         player = Instantiate(PlayerPrefab, new Vector2(0, 0), Quaternion.identity);
         e1 = Instantiate(EnemyPrefab, new Vector2(0, n - 1), Quaternion.identity);
         InvokeRepeating("enemyMove", 0f, 1f);
-
-
-
-
-
-        // e2 = Instantiate(EnemyPrefab, new Vector2(n - 1,0), Quaternion.identity);
-        // e3 = Instantiate(EnemyPrefab, new Vector2(0, n - 3), Quaternion.identity);
-        // e4 = Instantiate(EnemyPrefab, new Vector2(n - 3,0), Quaternion.identity);
 
 
     }
@@ -95,25 +89,49 @@ public class BoardManager : MonoBehaviour
     {
         List<Cell> path = PathManager.Instance.FindPath(grid, (int)e1.GetPosition.x, (int)e1.GetPosition.y, (int)player.GetPosition.x, (int)player.GetPosition.y);
         e1.SetPath(path);
+        e1.setSpeed(3f);
         e1.Move();
+        if (player.GetPosition.x == e1.GetPosition.x && player.GetPosition.y == e1.GetPosition.y)
+        {
+            PlayerPrefs.SetString("Status", "Lose");
+            SceneManager.LoadScene(2);
+        }
     }
     void followE2()
     {
         List<Cell> path = PathManager.Instance.FindPath(grid, (int)e2.GetPosition.x, (int)e2.GetPosition.y, (int)player.GetPosition.x, (int)player.GetPosition.y);
         e2.SetPath(path);
+        e2.setSpeed(5f);
         e2.Move();
+        if (player.GetPosition.x == e2.GetPosition.x && player.GetPosition.y == e2.GetPosition.y)
+        {
+            PlayerPrefs.SetString("Status", "Lose");
+            SceneManager.LoadScene(2);
+        }
     }
     void followE3()
     {
         List<Cell> path = PathManager.Instance.FindPath(grid, (int)e3.GetPosition.x, (int)e3.GetPosition.y, (int)player.GetPosition.x, (int)player.GetPosition.y);
         e3.SetPath(path);
+        e3.setSpeed(6f);
         e3.Move();
+        if (player.GetPosition.x == e3.GetPosition.x && player.GetPosition.y == e3.GetPosition.y)
+        {
+            PlayerPrefs.SetString("Status", "Lose");
+            SceneManager.LoadScene(2);
+        }
     }
     void followE4()
     {
         List<Cell> path = PathManager.Instance.FindPath(grid, (int)e4.GetPosition.x, (int)e4.GetPosition.y, (int)player.GetPosition.x, (int)player.GetPosition.y);
         e4.SetPath(path);
+        e4.setSpeed(8f);
         e4.Move();
+        if (player.GetPosition.x == e4.GetPosition.x && player.GetPosition.y == e4.GetPosition.y)
+        {
+            PlayerPrefs.SetString("Status", "Lose");
+            SceneManager.LoadScene(2);
+        }
     }
     void movementImput()
     {
@@ -146,6 +164,11 @@ public class BoardManager : MonoBehaviour
         PlayerPrefs.SetString("Time", time.text);
         PlayerPrefs.SetString("Level", LevelName.text);
         // Si llega al final Pasa al siguiente nivel
+        // if (e)
+        // {
+
+        // }
+
         if (player.GetPosition.x == n - 1 && player.GetPosition.y == n - 1)
         {
             switch (manager.Level)
@@ -174,9 +197,10 @@ public class BoardManager : MonoBehaviour
                     player.ResetPosition();
                     e1.ResetPosition(0, n - 1);
                     e2.ResetPosition(n - 1, 0);
-                    e3.ResetPosition(0,n - 3);
+                    e3.ResetPosition(0, n - 3);
                     e4 = Instantiate(EnemyPrefab, new Vector2(n - 3, 0), Quaternion.identity);
                     manager.nextLevel();
+                    PlayerPrefs.SetString("Status", "Win");
                     SceneManager.LoadScene(2);
                     break;
             }
