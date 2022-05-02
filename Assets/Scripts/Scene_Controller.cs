@@ -20,13 +20,7 @@ public class Scene_Controller : MonoBehaviour
     {
         
     }
-    private void OnTriggerEnter2D(Collider2D colliderCell) {
-        GameObject collisionGameObject = colliderCell.gameObject;
-        if(colliderCell.gameObject.tag=="Player"){
-            LoadScene();
-        Debug.Log("Entro en el collider");
-        }
-    }
+    
     void LoadScene() {
         if(useIntegerToLoadLevel){
             SceneManager.LoadScene(iLevelToLoad);
