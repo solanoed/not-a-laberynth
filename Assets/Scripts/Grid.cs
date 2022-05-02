@@ -13,11 +13,13 @@ public class Grid : ScriptableObject
     public int cellSize;
     public Cell cellPrefab;
     public Cell endPrefab;
+    public Cell objectPrefab;
+
     public Cell[,] gridArray;
     public PathManager pm;
 
 
-    public Grid(int width, int height, int cellSize, Cell cellPrefab,Cell endPrefab, int m)
+    public Grid(int width, int height, int cellSize, Cell cellPrefab, Cell endPrefab, Cell objectPrefab, int m)
     {
 
         this.width = width;
@@ -25,21 +27,25 @@ public class Grid : ScriptableObject
         this.cellSize = cellSize;
         this.cellPrefab = cellPrefab;
         this.endPrefab = endPrefab;
+        this.objectPrefab = objectPrefab;
+
         this.m = m;
         // Debug.Log(pm.FindPath(this,width,height,width-1,height-1));
-        generateBoard();    
+        generateBoard();
     }
+
+
     public int[] randomCells()
     {
         HashSet<int> numbers = new HashSet<int>();
-        
-        while (numbers.Count < m )
+
+        while (numbers.Count < m)
         {
             int r;
             do
             {
-                r=Random.Range(0, width * height);
-            } while (r ==0 || r ==99 );
+                r = Random.Range(0, width * height);
+            } while (r == 0 || r == 99);
             numbers.Add(r);
         }
         return obstacle(numbers);
@@ -88,39 +94,37 @@ public class Grid : ScriptableObject
 
                 var p = new Vector2(i, j) * cellSize;
                 //Final
-                if(i == width-1 && j == width-1){
+                if (i == width - 1 && j == width - 1)
+                {
 
-                cell = Instantiate(endPrefab, p, Quaternion.identity);
-                cell.SetEnd(true);
-
-                }else{
-                //Cell normal 
-                cell = Instantiate(cellPrefab, p, Quaternion.identity);
+                    cell = Instantiate(endPrefab, p, Quaternion.identity);
+                    cell.SetEnd(true);
 
                 }
+                else
+                {
+                    //Cell normal 
+                    cell = Instantiate(cellPrefab, p, Quaternion.identity);
+
+                }
+               
                 //Si es inicio
                 if (i == 0 && j == 0)
                 {
                     cell.SetStart(true);
                 }
-                //Segundo Spawner
-                if(i == height-1 && j == 0){
-                    Debug.Log("Spawner Abajo "+i+" "+j);
-                }
-                if(i == 0 && j == height-1){
-                    Debug.Log("Spawner Arriba "+i+" "+j);
 
-                }
-                
-                cell.Init(this, (int)p.x, (int)p.y, true, false, false);
+
                 int num = i * 10 + j;
                 foreach (var item in numbers)
                 {
                     if (num == item)
                     {
                         cell.SetWalkable(false);
+                        cell
 
                     }
+                cell.Init(this, (int)p.x, (int)p.y, true, false, false);
                 }
                 gridArray[i, j] = cell;
 
@@ -136,7 +140,7 @@ public class Grid : ScriptableObject
 
     private void generateBoard()
     {
-        int[] number = randomCells();           
+        int[] number = randomCells();
         fillBoard(number);
 
     }

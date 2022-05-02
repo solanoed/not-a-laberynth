@@ -12,6 +12,7 @@ public class BoardManager : MonoBehaviour
     public static BoardManager Instance;
     [SerializeField] private Cell CellPrefab;
     [SerializeField] private Cell endPrefab;
+    [SerializeField] private Cell objectPrefab;
     [SerializeField] private Player PlayerPrefab;
     [SerializeField] private Enemy EnemyPrefab;
     public KeyCode up;
@@ -46,7 +47,7 @@ public class BoardManager : MonoBehaviour
         LevelName.text = "Level 1";
         PlayerPrefs.SetString("Status", "None");
 
-        grid = new Grid(n, n, 1, CellPrefab, endPrefab, m);
+        grid = new Grid(n, n, 1, CellPrefab, endPrefab,objectPrefab, m);
         player = Instantiate(PlayerPrefab, new Vector2(0, 0), Quaternion.identity);
         e1 = Instantiate(EnemyPrefab, new Vector2(0, n - 1), Quaternion.identity);
         InvokeRepeating("enemyMove", 0f, 1f);
@@ -163,11 +164,6 @@ public class BoardManager : MonoBehaviour
         //Seteo de Prefs para Manager de Tiempo y Nivel Máximo alcanzado
         PlayerPrefs.SetString("Time", time.text);
         PlayerPrefs.SetString("Level", LevelName.text);
-        // Si llega al final Pasa al siguiente nivel
-        // if (e)
-        // {
-
-        // }
 
         if (player.GetPosition.x == n - 1 && player.GetPosition.y == n - 1)
         {
