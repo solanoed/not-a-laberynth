@@ -15,6 +15,7 @@ public class Cell : MonoBehaviour
     public int x, y ;
     public int gCost, hCost, fCost;
     public Cell pastCell;
+    public Sprite objeto;
 
     public void Init(Grid grid, int x, int y, bool isWalkable,bool isStart,bool isEnd)
     {
@@ -30,9 +31,9 @@ public class Cell : MonoBehaviour
 
   
 
-    public void SetColor(Color color)
+    public void SetSprite(Sprite objeto)
     {
-        Inner.GetComponent<SpriteRenderer>().color = color;
+        Inner.GetComponent<SpriteRenderer>().sprite = objeto;
     }
 
     private void OnMouseDown()
@@ -51,11 +52,9 @@ public class Cell : MonoBehaviour
 
     internal void SetWalkable(bool v)
     {
-        if (v==false)
-        {
-            
-        }
+        
         isWalkable = v;
+        SetSprite(objeto);
     }
     internal void SetStart(bool v)
     {

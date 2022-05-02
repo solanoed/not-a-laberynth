@@ -24,12 +24,14 @@ public class BoardManager : MonoBehaviour
     private Enemy e1, e2, e3, e4;
     [SerializeField]
     private float moveSpeed = 2f;
-    public int n = 10;
-    public int m = 10;
+  
     //Level collider
     public GameManager manager;
     public Text LevelName;
     public Text time;
+
+    int n = 10;
+    int m = 10;
 
     public float horizontalMove = 0f;
     public float verticalMove = 0f;
@@ -46,6 +48,10 @@ public class BoardManager : MonoBehaviour
     {
         LevelName.text = "Level 1";
         PlayerPrefs.SetString("Status", "None");
+        n = PlayerPrefs.GetInt("n");
+        m = PlayerPrefs.GetInt("m");
+
+
 
         grid = new Grid(n, n, 1, CellPrefab, endPrefab,objectPrefab, m);
         player = Instantiate(PlayerPrefab, new Vector2(0, 0), Quaternion.identity);
@@ -90,48 +96,69 @@ public class BoardManager : MonoBehaviour
     {
         List<Cell> path = PathManager.Instance.FindPath(grid, (int)e1.GetPosition.x, (int)e1.GetPosition.y, (int)player.GetPosition.x, (int)player.GetPosition.y);
         e1.SetPath(path);
-        e1.setSpeed(3f);
+        e1.setSpeed(6f);
         e1.Move();
+        InvokeRepeating("col1", 0f, 0.02f);
+
+        
+        
+    }
+    void col1(){
         if (player.GetPosition.x == e1.GetPosition.x && player.GetPosition.y == e1.GetPosition.y)
         {
-            PlayerPrefs.SetString("Status", "Lose");
             SceneManager.LoadScene(2);
+            PlayerPrefs.SetString("Status", "Lose");
         }
     }
     void followE2()
     {
         List<Cell> path = PathManager.Instance.FindPath(grid, (int)e2.GetPosition.x, (int)e2.GetPosition.y, (int)player.GetPosition.x, (int)player.GetPosition.y);
         e2.SetPath(path);
-        e2.setSpeed(5f);
+        e2.setSpeed(6f);
         e2.Move();
-        if (player.GetPosition.x == e2.GetPosition.x && player.GetPosition.y == e2.GetPosition.y)
+        InvokeRepeating("col2", 0f, 0.02f);
+
+       
+    }
+    void col2(){
+         if (player.GetPosition.x == e2.GetPosition.x && player.GetPosition.y == e2.GetPosition.y)
         {
-            PlayerPrefs.SetString("Status", "Lose");
             SceneManager.LoadScene(2);
+            PlayerPrefs.SetString("Status", "Lose");
         }
     }
     void followE3()
     {
         List<Cell> path = PathManager.Instance.FindPath(grid, (int)e3.GetPosition.x, (int)e3.GetPosition.y, (int)player.GetPosition.x, (int)player.GetPosition.y);
         e3.SetPath(path);
-        e3.setSpeed(6f);
+        e3.setSpeed(8f);
         e3.Move();
+        col1();
+        InvokeRepeating("col3", 0f, 0.02f);
+        
+    }
+    void col3(){
         if (player.GetPosition.x == e3.GetPosition.x && player.GetPosition.y == e3.GetPosition.y)
         {
-            PlayerPrefs.SetString("Status", "Lose");
             SceneManager.LoadScene(2);
+            PlayerPrefs.SetString("Status", "Lose");
         }
     }
     void followE4()
     {
         List<Cell> path = PathManager.Instance.FindPath(grid, (int)e4.GetPosition.x, (int)e4.GetPosition.y, (int)player.GetPosition.x, (int)player.GetPosition.y);
         e4.SetPath(path);
-        e4.setSpeed(8f);
+        e4.setSpeed(9f);
         e4.Move();
+        InvokeRepeating("col4", 0f, 0.02f);
+
+        
+    }
+    void col4(){
         if (player.GetPosition.x == e4.GetPosition.x && player.GetPosition.y == e4.GetPosition.y)
         {
-            PlayerPrefs.SetString("Status", "Lose");
             SceneManager.LoadScene(2);
+            PlayerPrefs.SetString("Status", "Lose");
         }
     }
     void movementImput()
@@ -196,9 +223,12 @@ public class BoardManager : MonoBehaviour
                     e3.ResetPosition(0, n - 3);
                     e4 = Instantiate(EnemyPrefab, new Vector2(n - 3, 0), Quaternion.identity);
                     manager.nextLevel();
+                    break;
+                case 4:
                     PlayerPrefs.SetString("Status", "Win");
                     SceneManager.LoadScene(2);
                     break;
+
             }
 
             Debug.Log(manager.Level);

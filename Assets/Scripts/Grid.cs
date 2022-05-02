@@ -100,14 +100,12 @@ public class Grid : ScriptableObject
                     cell = Instantiate(endPrefab, p, Quaternion.identity);
                     cell.SetEnd(true);
 
-                }
-                else
-                {
-                    //Cell normal 
+                }else{
                     cell = Instantiate(cellPrefab, p, Quaternion.identity);
-
                 }
-               
+                    
+                    //Cell normal 
+                    
                 //Si es inicio
                 if (i == 0 && j == 0)
                 {
@@ -115,16 +113,19 @@ public class Grid : ScriptableObject
                 }
 
 
+                cell.Init(this, (int)p.x, (int)p.y, true, false, false);
                 int num = i * 10 + j;
                 foreach (var item in numbers)
                 {
                     if (num == item)
                     {
-                        cell.SetWalkable(false);
-                        cell
+                    cell.SetWalkable(false);
+                    // cell = Instantiate(objectPrefab, p, Quaternion.identity);
+                        
+
+                    }else{
 
                     }
-                cell.Init(this, (int)p.x, (int)p.y, true, false, false);
                 }
                 gridArray[i, j] = cell;
 

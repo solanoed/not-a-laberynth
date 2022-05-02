@@ -156,6 +156,7 @@ MonoBehaviour:
   hCost: 0
   fCost: 0
   pastCell: {fileID: 0}
+  objeto: {fileID: 21300000, guid: c83caed49d03a9b4585ab13cba77942a, type: 3}
 --- !u!61 &-1707968034998958809
 BoxCollider2D:
   m_ObjectHideFlags: 0

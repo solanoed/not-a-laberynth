@@ -3,7 +3,11 @@ guid: b08708e21a6c6364f8281e2237a92fbf
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - textMeshPro: {instanceID: 0}
+  - Inner: {fileID: 5131701370079848917, guid: 874d85ce717e88d4088eee6b75d09bfe, type: 3}
+  - pastCell: {instanceID: 0}
+  - objeto: {fileID: 21300000, guid: c83caed49d03a9b4585ab13cba77942a, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
